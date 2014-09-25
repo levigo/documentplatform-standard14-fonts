@@ -19,3 +19,5 @@ The following table shows the resources and substitutions:
 | Times-BoldItalic           | Tinos-BoldItalic             | /com/levigo/jadice/fonts/serif/Tinos-BoldItalic.ttf  |
 | Helvetica-BoldOblique      | Arimo-BoldItalic             | /com/levigo/jadice/fonts/sans/Arimo-BoldItalic.ttf   |
 | Courier-BoldOblique        | Cousine-BoldItalic           | /com/levigo/jadice/fonts/mono/Cousine-BoldItalic.ttf |
+| Symbol                     | NOT INCLUDED                 |                                                      |
+| ZapfDingbats               | NOT INCLUDED                 |                                                      |

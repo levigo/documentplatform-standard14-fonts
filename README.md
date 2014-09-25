@@ -1,5 +1,4 @@
-Standard 14 Font Resources
-=================================
+# Standard 14 Font Resources
 
 This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitutes this module can not provide resources for Symbol and Zapf Dingbats typefaces at this moment.
 
@@ -21,3 +20,7 @@ The following table shows the resources and substitutions:
 | Courier-BoldOblique        | Cousine-BoldItalic           | /com/levigo/jadice/fonts/mono/Cousine-BoldItalic.ttf |
 | Symbol                     | NOT INCLUDED                 |                                                      |
 | ZapfDingbats               | NOT INCLUDED                 |                                                      |
+
+# How to use
+
+Simply clone the project and build via Apache Maven. Execute `mvn install` in the project's root folder (where the `pom.xml` is placed). This should result in a JAR file that will be placed in `target` folder under project's root folder. Include this JAR in your application's classpath and you will be able to use the included font resources.

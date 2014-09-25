@@ -5,7 +5,7 @@ This module provides font resources which are the best matching substitutes for 
 
 The following table shows the resources and substitutions:
 
-| Original Standard 14 Font  | Substitute (Postscript name) | Resource path starting at /src/main/resources/..     |
+| Original Standard 14 Font  | Substitute (Postscript name) | Resource path (in /src/main/resources)               |
 | -------------------------- | ---------------------------- | ---------------------------------------------------- |
 | Times-Roman                | Tinos                        | /com/levigo/jadice/fonts/serif/Tinos-Regular.ttf     |
 | Helvetica                  | Arimo                        | /com/levigo/jadice/fonts/sans/Arimo-Regular.ttf      |

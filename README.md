@@ -1,7 +1,7 @@
 Standard 14 Font Resources
 =================================
 
-This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitutes this module can not provide resources for Symbol and Zapf Dingbats typefaces.
+This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitutes this module can not provide resources for Symbol and Zapf Dingbats typefaces at this moment.
 
 The following table shows the resources and substitutions:
 

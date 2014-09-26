@@ -3,7 +3,7 @@
 
 	<groupId>org.levigo.jadice.documentplatform</groupId>
 	<artifactId>documentplatform-standard14-fonts</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 
 	<scm>
     	<connection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</connection>

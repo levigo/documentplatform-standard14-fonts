@@ -3,7 +3,7 @@
 
 	<groupId>org.levigo.jadice.documentplatform</groupId>
 	<artifactId>documentplatform-standard14-fonts</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1-SNAPSHOT</version>
 	<description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
 	<scm>

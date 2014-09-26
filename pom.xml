@@ -7,8 +7,8 @@
 	<description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
 	<scm>
-    	<connection>scm:git:ssh://github.com/levigo/documentplatform-standard14-fonts.git</connection>
-    	<developerConnection>scm:git:ssh://git@github.com/levigo/documentplatform-standard14-fonts.git</developerConnection>
+    	<connection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</connection>
+    	<developerConnection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</developerConnection>
     	<url>https://github.com/levigo/documentplatform-standard14-fonts</url>
     	<tag>HEAD</tag>
   	</scm>

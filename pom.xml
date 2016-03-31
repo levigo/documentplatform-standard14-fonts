@@ -16,8 +16,8 @@
   </properties>
   
 	<scm>
-    <connection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</connection>
-    <developerConnection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</developerConnection>
+    <connection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</connection>
+    <developerConnection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</developerConnection>
     <url>https://github.com/levigo/documentplatform-standard14-fonts</url>
     <tag>HEAD</tag>
 	</scm>

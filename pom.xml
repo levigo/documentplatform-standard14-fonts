@@ -60,7 +60,7 @@
           <target>1.7</target>
           <debug>false</debug>
           <optimize>true</optimize>
-          <!-- Even though the compiler plugin claims to use ${project.build.sourceEncoding} 
+          <!-- Even though the compiler plugin claims to use ${project.build.sourceEncoding}
             by default, this doesn't really work and we must specify it here manually. -->
           <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>

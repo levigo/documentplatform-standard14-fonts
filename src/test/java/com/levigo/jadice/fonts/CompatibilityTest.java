@@ -37,35 +37,35 @@ public class CompatibilityTest extends ImageComparisonTest {
       + "1234567890 " + "@€!\"§$%&/()=?{}[]\\<>|,;.:-_#'+*~´`µ°^²³";
 
   private static final int FONT_SIZE = 40;
-  
+
   private static final int MARKER_SIZE = 3;
 
-  @Parameterized.Parameters
+  @Parameterized.Parameters(name = "{index} - {0}")
   public static Object[] parameters() {
     return new Object[]{
         "mono/Cousine-Regular.ttf", "mono/Cousine-Bold.ttf", "mono/Cousine-Italic.ttf", "mono/Cousine-BoldItalic.ttf",
         "sans/Arimo-Regular.ttf", "sans/Arimo-Bold.ttf", "sans/Arimo-Italic.ttf", "sans/Arimo-BoldItalic.ttf",
-        "serif/Tinos-Regular.ttf","serif/Tinos-Bold.ttf","serif/Tinos-Italic.ttf","serif/Tinos-BoldItalic.ttf"
+        "serif/Tinos-Regular.ttf", "serif/Tinos-Bold.ttf", "serif/Tinos-Italic.ttf", "serif/Tinos-BoldItalic.ttf"
     };
   }
 
   @Parameterized.Parameter(0)
   public String fontResource;
-  
+
   public TrueTypeFont font;
-  
+
   @Before
   public void setUpTrueTypeFont() throws IOException, JadiceException {
     final SeekableInputStream inputStream = wrap(getClass().getResourceAsStream(fontResource));
     final TrueTypeFontLoader fontLoader = new TrueTypeFontLoader();
     font = (TrueTypeFont) fontLoader.load(inputStream);
   }
-  
+
   @Test
   public void assertThat_fsType_allowsEditing() {
-    assertThat(font.getFsType(), is(FSTYPE_EMBEDDING_EDITABLE.getMask())); 
+    assertThat(font.getFsType(), is(FSTYPE_EMBEDDING_EDITABLE.getMask()));
   }
-  
+
   @Test
   public void assertThat_renderedGlyphVector_hasExpectedVisualOutput() throws Exception {
     final CMap microsoftUnicodeCMap = font.getCMap(PLATFORM_ID_MS, ENCODING_ID_MS_UNICODE_BMP);

@@ -1,7 +1,7 @@
 package com.levigo.jadice.fonts;
 
 import static com.levigo.jadice.document.io.IOUtils.wrap;
-import static com.levigo.jadice.format.truetype.internal.FSType.FSTYPE_EMBEDDING_EDITABLE;
+import static com.levigo.jadice.format.truetype.internal.FSType.FSTYPE_EMBEDDING_INSTALLABLE;
 import static com.levigo.jadice.format.truetype.internal.structure.TrueTypeConstants.PLATFORM_ID_MS;
 import static com.levigo.jadice.format.truetype.internal.structure.TrueTypeConstantsMS.ENCODING_ID_MS_UNICODE_BMP;
 import static java.awt.geom.AffineTransform.getScaleInstance;
@@ -63,7 +63,7 @@ public class CompatibilityTest extends ImageComparisonTest {
 
   @Test
   public void assertThat_fsType_allowsEditing() {
-    assertThat(font.getFsType(), is(FSTYPE_EMBEDDING_EDITABLE.getMask()));
+    assertThat(font.getFsType(), is(FSTYPE_EMBEDDING_INSTALLABLE.getMask()));
   }
 
   @Test

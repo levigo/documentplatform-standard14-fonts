@@ -6,10 +6,65 @@
 	<version>1.2-SNAPSHOT</version>
 	<description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
-	<scm>
-    	<connection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</connection>
-    	<developerConnection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</developerConnection>
-    	<url>https://github.com/levigo/documentplatform-standard14-fonts</url>
-    	<tag>HEAD</tag>
-  	</scm>
+  <prerequisites>
+    <maven>3.3.9</maven>
+  </prerequisites>
+  
+  <properties>
+    <docp.core.version>1.0.0-SNAPSHOT</docp.core.version>
+    <docp.core.groupId>com.levigo.jadice.documentplatform.core</docp.core.groupId>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <scm>
+    <connection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</connection>
+    <developerConnection>scm:git:https://github.com/levigo/documentplatform-standard14-fonts.git</developerConnection>
+    <url>https://github.com/levigo/documentplatform-standard14-fonts</url>
+    <tag>HEAD</tag>
+  </scm>
+	
+	<dependencies>
+    <dependency>
+      <groupId>${docp.core.groupId}</groupId>
+      <artifactId>jadice-document</artifactId>
+      <version>${docp.core.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${docp.core.groupId}</groupId>
+      <artifactId>jadice-document</artifactId>
+      <version>${docp.core.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${docp.core.groupId}</groupId>
+      <artifactId>jadice-format-ttf</artifactId>
+      <version>${docp.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+	</dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <debug>false</debug>
+          <optimize>true</optimize>
+          <!-- Even though the compiler plugin claims to use ${project.build.sourceEncoding} 
+            by default, this doesn't really work and we must specify it here manually. -->
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

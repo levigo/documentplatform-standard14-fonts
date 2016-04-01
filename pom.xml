@@ -13,6 +13,7 @@
   <properties>
     <docp.core.version>1.0.0-SNAPSHOT</docp.core.version>
     <docp.core.groupId>com.levigo.jadice.documentplatform.core</docp.core.groupId>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
 	<scm>
@@ -48,4 +49,22 @@
       <scope>test</scope>
     </dependency>
 	</dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <debug>false</debug>
+          <optimize>true</optimize>
+          <!-- Even though the compiler plugin claims to use ${project.build.sourceEncoding} 
+            by default, this doesn't really work and we must specify it here manually. -->
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

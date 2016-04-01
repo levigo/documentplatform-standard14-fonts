@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.levigo.jadice.documentplatform</groupId>
-	<artifactId>documentplatform-standard14-fonts</artifactId>
-	<version>1.2-SNAPSHOT</version>
-	<description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
+  <groupId>org.levigo.jadice.documentplatform</groupId>
+  <artifactId>documentplatform-standard14-fonts</artifactId>
+  <version>1.2-SNAPSHOT</version>
+  <description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
   <prerequisites>
     <maven>3.3.9</maven>
@@ -22,8 +22,19 @@
     <url>https://github.com/levigo/documentplatform-standard14-fonts</url>
     <tag>HEAD</tag>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>maven2.releases.levigo.de</id>
+      <url>https://levigo.de/maven2/content/repositories/levigo-releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>maven2.snapshots.levigo.de</id>
+      <url>https://levigo.de/maven2/content/repositories/levigo-snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 	
-	<dependencies>
+  <dependencies>
     <dependency>
       <groupId>${docp.core.groupId}</groupId>
       <artifactId>jadice-document</artifactId>

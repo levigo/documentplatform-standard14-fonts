@@ -52,6 +52,7 @@
       <groupId>${docp.core.groupId}</groupId>
       <artifactId>jadice-format-ttf</artifactId>
       <version>${docp.core.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

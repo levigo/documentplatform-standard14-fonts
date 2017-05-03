@@ -19,7 +19,7 @@ The following table shows the resources and substitutions:
 | Helvetica-BoldOblique      | Arimo-BoldItalic                  | /com/levigo/jadice/fonts/sans/Arimo-BoldItalic.ttf   |
 | Courier-BoldOblique        | Cousine-BoldItalic                | /com/levigo/jadice/fonts/mono/Cousine-BoldItalic.ttf |
 | Symbol                     | NOT INCLUDED                      |                                                      |
-| ZapfDingbats               | NOT INCLUDED - UNDER CONSTRUCTION |                                                      |
+| ZapfDingbats               | Levibats							 | /com/levigo/jadice/fonts/symbol/Levibats.ttf           |                                      |
 
 # How to use
 

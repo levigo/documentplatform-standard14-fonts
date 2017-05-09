@@ -1,6 +1,6 @@
 # Standard 14 Font Resources
 
-This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitutes this module can not provide resources for Symbol and Zapf Dingbats typefaces at this moment.
+This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitutes this module can not provide the Symbol typefaces at this moment.
 
 The following table shows the resources and substitutions:
 
@@ -19,7 +19,7 @@ The following table shows the resources and substitutions:
 | Helvetica-BoldOblique      | Arimo-BoldItalic                  | /com/levigo/jadice/fonts/sans/Arimo-BoldItalic.ttf   |
 | Courier-BoldOblique        | Cousine-BoldItalic                | /com/levigo/jadice/fonts/mono/Cousine-BoldItalic.ttf |
 | Symbol                     | NOT INCLUDED                      |                                                      |
-| ZapfDingbats               | Levibats							 | /com/levigo/jadice/fonts/symbol/Levibats.ttf           |                                      |
+| ZapfDingbats               | Levibats							             | /com/levigo/jadice/fonts/symbol/Levibats.ttf         |
 
 # How to use
 

@@ -1,6 +1,6 @@
 # Standard 14 Font Resources
 
-This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitutes this module can not provide the Symbol typefaces at this moment.
+This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitute this module can not provide the Symbol typeface at this moment.
 
 The following table shows the resources and substitutions:
 

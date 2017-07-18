@@ -3,7 +3,7 @@
 
   <groupId>org.levigo.jadice.documentplatform</groupId>
   <artifactId>documentplatform-standard14-fonts</artifactId>
-  <version>2.1-SNAPSHOT</version>
+  <version>2.1</version>
   <description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
   <prerequisites>
@@ -20,7 +20,7 @@
       <connection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</connection>
       <developerConnection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</developerConnection>
       <url>https://github.com/levigo/documentplatform-standard14-fonts</url>
-      <tag>HEAD</tag>
+      <tag>documentplatform-standard14-fonts-2.1</tag>
   </scm>
 
   <distributionManagement>

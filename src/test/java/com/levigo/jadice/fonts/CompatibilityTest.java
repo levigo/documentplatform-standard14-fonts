@@ -46,7 +46,7 @@ public class CompatibilityTest extends ImageComparisonTest {
         "mono/Cousine-Regular.ttf", "mono/Cousine-Bold.ttf", "mono/Cousine-Italic.ttf", "mono/Cousine-BoldItalic.ttf",
         "sans/Arimo-Regular.ttf", "sans/Arimo-Bold.ttf", "sans/Arimo-Italic.ttf", "sans/Arimo-BoldItalic.ttf",
         "serif/Tinos-Regular.ttf", "serif/Tinos-Bold.ttf", "serif/Tinos-Italic.ttf", "serif/Tinos-BoldItalic.ttf",
-        "symbol/Levibats.ttf"
+        "symbol/Levibats-Regular.ttf"
     };
   }
 

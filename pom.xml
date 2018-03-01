@@ -11,7 +11,7 @@
   </prerequisites>
   
   <properties>
-    <docp.core.version>5.4.1.3</docp.core.version>
+    <docp.core.version>5.4.2.9</docp.core.version>
     <docp.core.groupId>com.levigo.jadice.documentplatform</docp.core.groupId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>

@@ -1,86 +1,96 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.levigo.jadice.documentplatform</groupId>
-  <artifactId>documentplatform-standard14-fonts</artifactId>
-  <version>2.3-SNAPSHOT</version>
-  <description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
+    <groupId>org.levigo.jadice.documentplatform</groupId>
+    <artifactId>documentplatform-standard14-fonts</artifactId>
+    <version>2.3-SNAPSHOT</version>
+    <description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
-  <prerequisites>
-    <maven>3.3.9</maven>
-  </prerequisites>
-  
-  <properties>
-    <docp.core.version>5.4.2.9</docp.core.version>
-    <docp.core.groupId>com.levigo.jadice.documentplatform</docp.core.groupId>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  
-  <scm>
-      <connection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</connection>
-      <developerConnection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</developerConnection>
-      <url>https://github.com/levigo/documentplatform-standard14-fonts</url>
-      <tag>HEAD</tag>
-  </scm>
+    <prerequisites>
+        <maven>3.3.9</maven>
+    </prerequisites>
 
-  <distributionManagement>
-    <repository>
-      <id>maven2.releases.levigo.de</id>
-      <url>https://levigo.de/maven2/content/repositories/levigo-releases/</url>
-    </repository>
-    <snapshotRepository>
-      <id>maven2.snapshots.levigo.de</id>
-      <url>https://levigo.de/maven2/content/repositories/levigo-snapshots/</url>
-    </snapshotRepository>
-  </distributionManagement>
-	
-  <dependencies>
-    <dependency>
-      <groupId>${docp.core.groupId}</groupId>
-      <artifactId>jadice-document</artifactId>
-      <version>${docp.core.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>${docp.core.groupId}</groupId>
-      <artifactId>jadice-document</artifactId>
-      <version>${docp.core.version}</version>
-      <classifier>tests</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>${docp.core.groupId}</groupId>
-      <artifactId>jadice-format-ttf</artifactId>
-      <version>${docp.core.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-	</dependencies>
+    <properties>
+        <docp.core.version>5.4.2.9</docp.core.version>
+        <docp.core.groupId>com.levigo.jadice.documentplatform</docp.core.groupId>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <debug>false</debug>
-          <optimize>true</optimize>
-          <!-- Even though the compiler plugin claims to use ${project.build.sourceEncoding}
-            by default, this doesn't really work and we must specify it here manually. -->
-          <encoding>${project.build.sourceEncoding}</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-      </plugin>
-    </plugins>
-  </build>
+    <scm>
+        <connection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</connection>
+        <developerConnection>scm:git:git@github.com:levigo/documentplatform-standard14-fonts.git</developerConnection>
+        <url>https://github.com/levigo/documentplatform-standard14-fonts</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>maven2.releases.levigo.de</id>
+            <url>https://levigo.de/maven2/content/repositories/levigo-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven2.snapshots.levigo.de</id>
+            <url>https://levigo.de/maven2/content/repositories/levigo-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>${docp.core.groupId}</groupId>
+            <artifactId>jadice-document</artifactId>
+            <version>${docp.core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${docp.core.groupId}</groupId>
+            <artifactId>jadice-document</artifactId>
+            <version>${docp.core.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${docp.core.groupId}</groupId>
+            <artifactId>jadice-format-ttf</artifactId>
+            <version>${docp.core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- force use of javadoc 2.10.4 since this is the last version of the plugin to support java 1.6 -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <debug>false</debug>
+                    <optimize>true</optimize>
+                    <!-- Even though the compiler plugin claims to use ${project.build.sourceEncoding}
+                      by default, this doesn't really work and we must specify it here manually. -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

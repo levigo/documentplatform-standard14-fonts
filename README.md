@@ -6,20 +6,26 @@ The following table shows the resources and substitutions:
 
 | Original Standard 14 Font  | Substitute (Postscript name)      | Resource path (in /src/main/resources)               |
 | -------------------------- | --------------------------------  | ---------------------------------------------------- |
-| Times-Roman                | Tinos                             | /com/levigo/jadice/fonts/serif/Tinos-Regular.ttf     |
-| Helvetica                  | Arimo                             | /com/levigo/jadice/fonts/sans/Arimo-Regular.ttf      |
-| Courier                    | Cousine                           | /com/levigo/jadice/fonts/mono/Cousine-Regular.ttf    |
-| Times-Bold                 | Tinos-Bold                        | /com/levigo/jadice/fonts/serif/Tinos-Bold.ttf        |
-| Helvetica-Bold             | Arimo-Bold                        | /com/levigo/jadice/fonts/sans/Arimo-Bold.ttf         |
-| Courier-Bold               | Cousine-Bold                      | /com/levigo/jadice/fonts/mono/Cousine-Bold.ttf       |
-| Times-Italic               | Tinos-Italic                      | /com/levigo/jadice/fonts/serif/Tinos-Italic.ttf      |
-| Helvetica-Oblique          | Arimo-Italic                      | /com/levigo/jadice/fonts/sans/Arimo-Italic.ttf       |
-| Courier-Oblique            | Cousine-Italic                    | /com/levigo/jadice/fonts/mono/Cousine-Italic.ttf     |
-| Times-BoldItalic           | Tinos-BoldItalic                  | /com/levigo/jadice/fonts/serif/Tinos-BoldItalic.ttf  |
-| Helvetica-BoldOblique      | Arimo-BoldItalic                  | /com/levigo/jadice/fonts/sans/Arimo-BoldItalic.ttf   |
-| Courier-BoldOblique        | Cousine-BoldItalic                | /com/levigo/jadice/fonts/mono/Cousine-BoldItalic.ttf |
-| Symbol                     | NOT INCLUDED                      |                                                      |
-| ZapfDingbats               | Levibats-Regular				     | /com/levigo/jadice/fonts/symbol/Levibats-Regular.ttf         |
+| Times-Roman                | Tinos                             | /com/levigo/jadice/fonts/serif/tinos-v15-latin-regular.ttf     |
+| Helvetica                  | Arimo                             | /com/levigo/jadice/fonts/sans/arimo-v16-latin-regular.ttf      |
+| Courier                    | Cousine                           | /com/levigo/jadice/fonts/mono/cousine-v16-latin-regular.ttf    |
+| Times-Bold                 | Tinos-Bold                        | /com/levigo/jadice/fonts/serif/tinos-v15-latin-700.ttf         |
+| Helvetica-Bold             | Arimo-Bold                        | /com/levigo/jadice/fonts/sans/arimo-v16-latin-700.ttf          |
+| Courier-Bold               | Cousine-Bold                      | /com/levigo/jadice/fonts/mono/cousine-v16-latin-700.ttf        |
+| Times-Italic               | Tinos-Italic                      | /com/levigo/jadice/fonts/serif/tinos-v15-latin-italic.ttf      |
+| Helvetica-Oblique          | Arimo-Italic                      | /com/levigo/jadice/fonts/sans/arimo-v16-latin-italic.ttf       |
+| Courier-Oblique            | Cousine-Italic                    | /com/levigo/jadice/fonts/mono/cousine-v16-latin-italic.ttf     |
+| Times-BoldItalic           | Tinos-BoldItalic                  | /com/levigo/jadice/fonts/serif/tinos-v15-latin-700italic.ttf   |
+| Helvetica-BoldOblique      | Arimo-BoldItalic                  | /com/levigo/jadice/fonts/sans/arimo-v16-latin-700italic.ttf    |
+| Courier-BoldOblique        | Cousine-BoldItalic                | /com/levigo/jadice/fonts/mono/cousine-v16-latin-700italic.ttf  |
+| Symbol                     | NOT INCLUDED                      |                                                                |
+| ZapfDingbats               | Levibats-Regular                  | /com/levigo/jadice/fonts/symbol/Levibats-Regular.ttf           |
+
+
+All fonts are available in different formats:
+* TTF (TrueType) - System font and Safari, Android, iOS
+* WOFF (Web Open Font Format) - Modern Browsers
+* WOFF2 (Web Open Font Format) - Super Modern Browsers
 
 # How to use
 

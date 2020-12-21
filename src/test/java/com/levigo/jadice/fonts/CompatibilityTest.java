@@ -30,6 +30,9 @@ import com.levigo.jadice.format.truetype.internal.TrueTypeFont;
 import com.levigo.jadice.format.truetype.internal.TrueTypeFontLoader;
 import com.levigo.jadice.format.truetype.internal.structure.CMap;
 
+/**
+ * You can see the image-diffs if you set the env-variable ICT_SHOW_DIFFS=true
+ */
 @RunWith(Parameterized.class)
 public class CompatibilityTest extends ImageComparisonTest {
 
@@ -43,9 +46,9 @@ public class CompatibilityTest extends ImageComparisonTest {
   @Parameterized.Parameters(name = "{index} - {0}")
   public static Object[] parameters() {
     return new Object[]{
-        "mono/Cousine-Regular.ttf", "mono/Cousine-Bold.ttf", "mono/Cousine-Italic.ttf", "mono/Cousine-BoldItalic.ttf",
-        "sans/Arimo-Regular.ttf", "sans/Arimo-Bold.ttf", "sans/Arimo-Italic.ttf", "sans/Arimo-BoldItalic.ttf",
-        "serif/Tinos-Regular.ttf", "serif/Tinos-Bold.ttf", "serif/Tinos-Italic.ttf", "serif/Tinos-BoldItalic.ttf",
+        "mono/cousine-v16-latin-regular.ttf", "mono/cousine-v16-latin-700.ttf", "mono/cousine-v16-latin-italic.ttf", "mono/cousine-v16-latin-700italic.ttf",
+        "sans/arimo-v16-latin-regular.ttf", "sans/arimo-v16-latin-700.ttf", "sans/arimo-v16-latin-italic.ttf", "sans/arimo-v16-latin-700italic.ttf",
+        "serif/tinos-v15-latin-regular.ttf", "serif/tinos-v15-latin-700.ttf", "serif/tinos-v15-latin-italic.ttf", "serif/tinos-v15-latin-700italic.ttf",
         "symbol/Levibats-Regular.ttf"
     };
   }

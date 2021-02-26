@@ -3,7 +3,7 @@
 
     <groupId>org.levigo.jadice.documentplatform</groupId>
     <artifactId>documentplatform-standard14-fonts</artifactId>
-    <version>2.4-SNAPSHOT</version>
+    <version>3.0-SNAPSHOT</version>
     <description>Font resources as substitutes for PDF's "Standard 14 Fonts"</description>
 
     <prerequisites>
@@ -11,6 +11,7 @@
     </prerequisites>
 
     <properties>
+        <!-- Uses old core as actual version doesn't have ImageComparisonTest anymore -->
         <docp.core.version>5.4.2.9</docp.core.version>
         <docp.core.groupId>com.levigo.jadice.documentplatform</docp.core.groupId>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

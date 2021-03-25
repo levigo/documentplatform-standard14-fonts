@@ -1,3 +1,7 @@
+[![Actions Status](https://github.com/levigo/documentplatform-standard14-fonts/workflows/Continuous%20Delivery/badge.svg)](https://github.com/levigo/documentplatform-standard14-fonts/actions)
+[![Docker Hub](https://img.shields.io/badge/MADE%20with-JAVA-RED.svg)](#JAVA)
+[![Generic badge](https://img.shields.io/badge/current%20version-2.3.2-1abc9c.svg)](https://github.com/levigo/documentplatform-standard14-fonts/releases/tag/documentplatform-standard14-fonts-2.3)
+
 # Standard 14 Font Resources
 
 This module provides font resources which are the best matching substitutes for PDF's standard 14 fonts. Due to missing free substitute this module can not provide the Symbol typeface at this moment.

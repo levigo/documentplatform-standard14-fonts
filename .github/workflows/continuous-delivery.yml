@@ -1,0 +1,182 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths-ignore:
+      #   !! Attention!! removing the following line may produce an endless loop on the build system!!
+      - '**/README.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_PTA }}
+
+      - name: Bump version and create tag
+        id: semanticversion
+        uses: hennejg/github-tag-action@v4.2.4
+        with:
+          release_branches: master
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: documentplatform-standard14-fonts-
+
+      - name: Verify and print new build number
+        run: |
+          if echo '${{ steps.semanticversion.outputs.new_tag }}' |grep -Eq '^documentplatform-standard14-fonts-[0-9]+[.][0-9]+[.][0-9]+$'; then
+            echo Tag '${{ steps.semanticversion.outputs.new_tag }}', New version '${{ steps.semanticversion.outputs.new_version }}', Changelog '${{ steps.semanticversion.outputs.changelog }}'
+          else
+            echo 'unexpected tag format - aborting'
+            exit -1
+          fi
+
+      ## Configure JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      ## Enable Caching
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      ## Populate local maven repo on cache miss
+      - name: Download local-maven-repo
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          curl -L --request GET \
+            --url "https://api.github.com/repos/levigo/documentplatform-standard14-fonts/actions/artifacts" \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > artifacts.json \
+          && curl -v -L --request GET \
+            --url "$(jq -r '.artifacts[] | select(.name=="local-maven-repo") | .archive_download_url' artifacts.json)" \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            -o local-maven-repo.zip || true
+      - name: Extract local-maven-repo
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          unzip local-maven-repo.zip \
+          && tar -xzf local-maven-repo.tar.gz -C ~/ \
+          && ls ~/.m2/repository || true
+
+
+      ## Configure maven settings
+      - name: Prepare maven settings
+        env:
+          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REPO_ALL }}
+          REPOSITORY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
+          REPOSITORY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
+          REPOSITORY_RELEASE_USERID: ${{ secrets.NEXUS2_USERNAME }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.NEXUS2_PASSWORD }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+        run: |
+          mkdir -p ~/.m2
+          envsubst < ./.github/settings.xml > ~/.m2/settings.xml
+
+      - name: Set version
+        id: version
+        run: |
+          echo Releasing as ${{ steps.semanticversion.outputs.new_version }}
+          mvn versions:set -DnewVersion=${{ steps.semanticversion.outputs.new_version }}
+
+      ## Attention! doing only a mvn package here will fail the deploy, as the deploy won't find the tests jars anymore
+      - name: Perform build
+        uses: GabrielBB/xvfb-action@v1.4
+        with:
+          run: mvn -B install -Dmaven.test.failure.ignore=true
+
+      ## Publish test report
+      - name: Publish Test Report
+        id: test-report
+        uses: hennejg/action-surefire-report@v1.0.4.jh2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_failure: true
+
+      ## Deploy
+      - name: Deploy packages
+        run: mvn -P create-source-archive -B deploy -DskipTests -Dmaven.install.skip=true
+
+      ## checkout a second repository - we need this one to be able to notify JIRA
+      - uses: actions/checkout@v2-beta
+        with:
+          repository: levigo/action-jira
+          ref: refs/tags/v1
+          path: action-jira
+          token: ${{ secrets.REPO_PTA }} # `REPO_PTA` contains a PersonalAccessToken to clone a private repo
+
+      ## get the docker image used for next step
+      - name: get jcdc image
+        env:
+          REGISTRY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
+          REGISTRY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
+          REGISTRY_URL: 'registry.jadice.com'
+        run: |
+          docker login ${REGISTRY_URL} --username ${REGISTRY_USERID} --password ${REGISTRY_CREDENTIALS}
+          docker pull registry.jadice.com/jira-cd-client:1.0.11
+
+      ## create a release and publish it and also add a comment for the JIRA issue parsed from the commit message
+      - name: notify JIRA
+        uses: ./action-jira
+        with:
+          jira-base-url: "${{ secrets.JIRA_BASE_URL }}"
+          jira-user: "${{ secrets.JIRA_USER }}"
+          jira-password: "${{ secrets.JIRA_PASSWORD }}"
+          jira-projet-key: "DOCPV"
+          release-version: "${{ steps.semanticversion.outputs.new_version }}"
+          git-commitHash: "${{ github.sha }}"
+          git-repositoryPath: "./.git"
+          dryrun: "false"
+
+      ## Update README.md
+      - name: Edit README.md to contain version number
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git reset --hard HEAD
+
+          sed -ri "s,<version>.*</version>,<version>${{ steps.semanticversion.outputs.new_version }}</version>," README.md
+          sed -ri "s,version-[0-9a-z.]+-,version-${{ steps.semanticversion.outputs.new_version }}-," README.md
+          sed -ri "s,releases/tag/documentplatform-standard14-fonts-[0-9a-z._-]+,releases/tag/${{ steps.semanticversion.outputs.new_tag }}," README.md
+          cat README.md
+
+          git add README.md
+          git commit -m "Edit README.md to contain correct version"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: master
+          github_token: ${{ secrets.REPO_PTA }}
+
+      ## Create a github release like described in https://docs.github.com/en/free-pro-team@latest/rest/reference/repos#create-a-release
+      - name: Create Release
+        run: |
+          curl --request POST \
+            --url "https://api.github.com/repos/${{ github.repository }}/releases" \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            --data '{"tag_name":"${{ steps.semanticversion.outputs.new_tag }}", "name":"${{ steps.semanticversion.outputs.new_version }}"}'
+
+      ## Notify Slack
+      - name: Notify slack
+        uses: hennejg/slack-build-notifier@v1.1
+        with:
+          username: GitHub
+          icon_emoji: octocat
+          channel: ci_docp
+          text: Released new version `${{ steps.semanticversion.outputs.new_version }}` of *${{ github.repository }}* to ${{ secrets.REPOSITORY_URL }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

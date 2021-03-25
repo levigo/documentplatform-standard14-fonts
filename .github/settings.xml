@@ -1,0 +1,37 @@
+<settings>
+    <servers>
+        <server>
+            <id>nexus</id>
+            <username>${REPOSITORY_USERID}</username>
+            <password>${REPOSITORY_CREDENTIALS}</password>
+        </server>
+        <server>
+            <id>maven2.releases.levigo.de</id>
+            <username>${REPOSITORY_RELEASE_USERID}</username>
+            <password>${REPOSITORY_RELEASE_CREDENTIALS}</password>
+        </server>
+    </servers>
+    <mirrors>
+        <mirror>
+            <id>nexus</id>
+            <mirrorOf>*</mirrorOf>
+            <name>nexus</name>
+            <url>${REPOSITORY_URL}</url>
+        </mirror>
+    </mirrors>
+    <pluginGroups>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>${SONAR_HOST_URL}</sonar.host.url>
+                <sonar.login>${SONAR_LOGIN}</sonar.login>
+            </properties>
+        </profile>
+    </profiles>
+</settings>

@@ -1,0 +1,94 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+    paths-ignore:
+      #   !! Attention!! removing the following line may produce an endless loop on the build system!!
+      - '**/README.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      ## Configure JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      ## Enable Caching
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      ## Populate local maven repo on cache miss
+      - name: Download local-maven-repo
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          curl -L --request GET \
+            --url "https://api.github.com/repos/levigo/documentplatform-standard14-fonts/actions/artifacts" \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > artifacts.json \
+          && curl -v -L --request GET \
+            --url "$(jq -r '.artifacts[] | select(.name=="local-maven-repo") | .archive_download_url' artifacts.json)" \
+            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+            -o local-maven-repo.zip || true
+      - name: Extract local-maven-repo
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          unzip local-maven-repo.zip \
+          && tar -xzf local-maven-repo.tar.gz -C ~/ \
+          && ls ~/.m2/repository || true
+
+      ## Configure maven settings
+      - name: Prepare maven settings
+        env:
+          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REPO_ALL }}
+          REPOSITORY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
+          REPOSITORY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
+          REPOSITORY_RELEASE_USERID: ${{ secrets.NEXUS2_USERNAME }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.NEXUS2_PASSWORD }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+        run: |
+          mkdir -p ~/.m2
+          envsubst < ./.github/settings.xml > ~/.m2/settings.xml
+
+      ## Build with maven
+      - name: Perform build
+        uses: GabrielBB/xvfb-action@v1.4
+        with:
+          run: mvn verify
+
+      ## Publish test report
+      - name: Publish Test Report
+        id: test-report
+        uses: hennejg/action-surefire-report@v1.0.4.jh2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_failure: true
+
+      ## Notify Slack
+      - name: Notify slack
+        uses: hennejg/slack-build-notifier@v1.1
+        with:
+          username: GitHub
+          icon_emoji: octocat
+          channel: ci_docp
+          text: Successful mvn build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()

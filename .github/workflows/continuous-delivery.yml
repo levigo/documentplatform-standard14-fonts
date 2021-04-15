@@ -49,7 +49,6 @@ jobs:
         with:
           path: |
             ~/.m2/repository
-            --exclude='*/repository/org/jadice/documentplatform/*'
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
@@ -57,13 +56,9 @@ jobs:
       ## Configure maven settings
       - name: Prepare maven settings
         env:
-          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REPO_ALL }}
-          REPOSITORY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
-          REPOSITORY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
-          REPOSITORY_RELEASE_USERID: ${{ secrets.NEXUS2_USERNAME }}
-          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.NEXUS2_PASSWORD }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_LOGIN: ${{ secrets.SONAR_LOGIN }}
+          REPOSITORY_URL: "https://levigo.de/maven2/content/repositories/levigo-releases/"
+          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
         run: |
           mkdir -p ~/.m2
           envsubst < ./.github/settings.xml > ~/.m2/settings.xml
@@ -92,69 +87,6 @@ jobs:
       ## Deploy
       - name: Deploy packages
         run: mvn -B deploy -DskipTests -Dmaven.install.skip=true
-
-      - name: Set up Java for publishing to GitHub Packages
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Publish to GitHub Packages
-        run: mvn --batch-mode deploy -Dmaven.test.skip.exec=true -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/levigo/documentplatform-standard14-fonts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      ## checkout a second repository - we need this one to be able to notify JIRA
-      - uses: actions/checkout@v2
-        with:
-          repository: levigo/action-jira
-          ref: refs/tags/v7
-          path: action-jira
-          token: ${{ secrets.REPO_PTA }} # `REPO_PTA` contains a PersonalAccessToken to clone a private repo
-
-      ## get the docker image used for next step
-      - name: get jcdc image
-        env:
-          REGISTRY_USERID: ${{ secrets.LEVIGO_NEXUS_USERNAME }}
-          REGISTRY_CREDENTIALS: ${{ secrets.LEVIGO_NEXUS_PASSWORD }}
-          REGISTRY_URL: 'registry.jadice.com'
-        run: |
-          docker login ${REGISTRY_URL} --username ${REGISTRY_USERID} --password ${REGISTRY_CREDENTIALS}
-          docker pull registry.jadice.com/jira-cd-client:1.0.29
-
-      ## create a release and publish it and also add a comment for the JIRA issue parsed from the commit message
-      - name: notify JIRA
-        uses: ./action-jira
-        with:
-          runnable: "ReleaseRunnable"
-          jira-base-url: "${{ secrets.JIRA_BASE_URL }}"
-          jira-user: "${{ secrets.JIRA_USER }}"
-          jira-password: "${{ secrets.JIRA_PASSWORD }}"
-          jira-projet-key: "DOCPV"
-          release-version: "${{ steps.semanticversion.outputs.new_version }}"
-          git-commitHash: "${{ github.sha }}"
-          git-repositoryPath: "./.git"
-          dryrun: "false"
-          archived: "false"
-
-      ## Update README.md
-      - name: Edit README.md to contain version number
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git reset --hard HEAD
-
-          sed -ri "s,<version>.*</version>,<version>${{ steps.semanticversion.outputs.new_version }}</version>," README.md
-          sed -ri "s,version-[0-9a-z.]+-,version-${{ steps.semanticversion.outputs.new_version }}-," README.md
-          sed -ri "s,releases/tag/documentplatform-standard14-fonts-[0-9a-z._-]+,releases/tag/${{ steps.semanticversion.outputs.new_tag }}," README.md
-          cat README.md
-
-          git add README.md
-          git commit -m "Edit README.md to contain correct version"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: master
-          github_token: ${{ secrets.REPO_PTA }}
 
       - name: Create Release
         uses: actions/create-release@v1

@@ -10,47 +10,35 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 15
 
     strategy:
       fail-fast: false
+      matrix:
+        jdk: [ 8 ]
+
 
     steps:
       - uses: actions/checkout@v2
+
+      ## Enable Caching
+      # Reduce cache size by excluding artifacts with the project.groupId
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+            --exclude='*/repository/org/levigo/jadice/documentplatform/*'
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
 
       ## Configure JDK
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 8
-
-      ## Enable Caching
-      - uses: actions/cache@v2
-        id: cache
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      ## Populate local maven repo on cache miss
-      - name: Download local-maven-repo
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          curl -L --request GET \
-            --url "https://api.github.com/repos/levigo/documentplatform-standard14-fonts/actions/artifacts" \
-            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' > artifacts.json \
-          && curl -v -L --request GET \
-            --url "$(jq -r '.artifacts[] | select(.name=="local-maven-repo") | .archive_download_url' artifacts.json)" \
-            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-            -o local-maven-repo.zip || true
-      - name: Extract local-maven-repo
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          unzip local-maven-repo.zip \
-          && tar -xzf local-maven-repo.tar.gz -C ~/ \
-          && ls ~/.m2/repository || true
+          java-version: ${{ matrix.jdk }}
 
       ## Configure maven settings
       - name: Prepare maven settings
@@ -68,17 +56,24 @@ jobs:
 
       ## Build with maven
       - name: Perform build
-        uses: GabrielBB/xvfb-action@v1.4
+        uses: GabrielBB/xvfb-action@v1
         with:
-          run: mvn verify
+          run: mvn -B verify -Dmaven.test.failure.ignore=true
 
       ## Publish test report
-      - name: Publish Test Report
+      - name: Publish Test Report for JDK ${{ matrix.jdk }}
         id: test-report
-        uses: hennejg/action-surefire-report@v1.0.4.jh2
+        uses: scacap/action-surefire-report@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          fail_on_failure: true
+          fail_on_test_failures: true
+          check_name: Test Report for JDK ${{ matrix.jdk }}
+
+      ## Static code analysis with sonarqube
+      - name: Perform sonar analysis
+        if: env.SONAR_ANALYSIS_ENABLED == 'true' && matrix.jdk == 8
+        continue-on-error: true
+        run: mvn -B sonar:sonar -Dsonar.scm.disabled=true -Dsonar.qualitygate.wait=true
 
       ## Notify Slack
       - name: Notify slack
@@ -87,7 +82,7 @@ jobs:
           username: GitHub
           icon_emoji: octocat
           channel: ci_docp
-          text: Successful mvn build
+          text: Performed mvn build with JDK ${{ matrix.jdk }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -11,14 +11,6 @@
             <password>${REPOSITORY_RELEASE_CREDENTIALS}</password>
         </server>
     </servers>
-    <mirrors>
-        <mirror>
-            <id>nexus</id>
-            <mirrorOf>*</mirrorOf>
-            <name>nexus</name>
-            <url>${REPOSITORY_URL}</url>
-        </mirror>
-    </mirrors>
     <pluginGroups>
         <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
     </pluginGroups>
@@ -32,6 +24,60 @@
                 <sonar.host.url>${SONAR_HOST_URL}</sonar.host.url>
                 <sonar.login>${SONAR_LOGIN}</sonar.login>
             </properties>
+        </profile>
+        <!--
+         Downloading all maven artifacts from a mirror some 6000 miles away does not seem reasonable.
+         Therefore we download only the private artifacts from Nexus3 and all publicly available artifacts from maven-central.
+         -->
+        <profile>
+            <id>central-nexus</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>maven-central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                </repository>
+                <repository>
+                    <id>nexus</id>
+                    <url>${REPOSITORY_URL}</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven-central</id>
+                    <url>https://repo.maven.apache.org/maven2/</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>nexus</id>
+                    <url>${REPOSITORY_URL}</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
         </profile>
     </profiles>
 </settings>

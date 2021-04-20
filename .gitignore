@@ -1,5 +1,19 @@
-*.iml
-target/
-.idea/
-.failed/
-.expected-vs-actual/
+# exclude target directories
+target
+**/target/
+**/git.properties
+
+release.properties
+pom.xml.releaseBackup
+
+# eclipse project files and directories
+.classpath
+.project
+.settings
+.recommenders
+.metadata
+
+# exclude IntelliJ IDEA files
+.idea
+**/*.iml
+.run

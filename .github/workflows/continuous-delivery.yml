@@ -3,9 +3,6 @@ name: Continuous Delivery
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      #   !! Attention!! removing the following line may produce an endless loop on the build system!!
-      - '**/README.md'
 
 jobs:
   build:

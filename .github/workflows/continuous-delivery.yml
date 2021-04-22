@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      ## compute the String of the next version
+      ## compute the string of the next version
       - name: Bump version and create tag
         id: semanticversion
         uses: hennejg/github-tag-action@v4.2.4

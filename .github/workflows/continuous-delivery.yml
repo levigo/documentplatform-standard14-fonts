@@ -16,9 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.REPO_PTA }}
 
       - name: Bump version and create tag
         id: semanticversion

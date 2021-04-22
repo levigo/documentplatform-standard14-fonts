@@ -126,7 +126,7 @@ jobs:
           asset_name: documentplatform-standard14-fonts-${{ steps.semanticversion.outputs.new_version }}-sources.jar
           asset_content_type: application/java-archive
 
-      ## Notify Slack
+      ## Notify Mattermost
       - name: Notify slack
         uses: hennejg/slack-build-notifier@v1.1
         with:

@@ -89,7 +89,7 @@ jobs:
         uses: actions/create-release@v1
         env:
           #don't use the GITHUB_TOKEN https://github:community/t/actions-not-triggered-on-release/17944/12:
-          GITHUB_TOKEN: ${{ secrets.REPO_PTA }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.semanticversion.outputs.new_tag }}
           release_name: ${{ steps.semanticversion.outputs.new_version }}

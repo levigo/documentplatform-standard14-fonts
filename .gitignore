@@ -17,3 +17,6 @@ pom.xml.releaseBackup
 .idea
 **/*.iml
 .run
+
+/.expected-vs-actual/
+/.failed/

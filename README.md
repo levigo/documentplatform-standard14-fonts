@@ -21,6 +21,11 @@ The following table shows the resources and substitutions:
 | Symbol                     | NOT INCLUDED                      |                                                      |
 | ZapfDingbats               | Levibats-Regular                  | /com/levigo/jadice/fonts/symbol/Levibats-Regular.ttf |
 
-# How to use
+## How to use
 
 Simply clone the project and build via Apache Maven. Execute `mvn install` in the project's root folder (where the `pom.xml` is placed). This should result in a JAR file that will be placed in `target` folder under project's root folder. Include this JAR in your application's classpath and you will be able to use the included font resources.
+
+## License
+
+The individual fonts come with their own license each. The according license files are placed inside the folder of the
+font. This project and the fonts all use the Apache 2.0 license.

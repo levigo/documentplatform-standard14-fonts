@@ -11,8 +11,7 @@
     </prerequisites>
 
     <properties>
-        <docp.core.version>5.4.2.9</docp.core.version>
-        <docp.core.groupId>com.levigo.jadice.documentplatform</docp.core.groupId>
+        <docp.core.version>3.54.1</docp.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -36,20 +35,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>${docp.core.groupId}</groupId>
+            <groupId>com.levigo.jadice.documentplatform.core</groupId>
             <artifactId>jadice-document</artifactId>
             <version>${docp.core.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${docp.core.groupId}</groupId>
-            <artifactId>jadice-document</artifactId>
-            <version>${docp.core.version}</version>
             <classifier>tests</classifier>
-            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>${docp.core.groupId}</groupId>
+            <groupId>com.levigo.jadice.documentplatform.core</groupId>
             <artifactId>jadice-format-ttf</artifactId>
             <version>${docp.core.version}</version>
             <scope>test</scope>
@@ -57,7 +50,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
         <!-- Needed if you want an image-diff (by setting env-var: ICT_SHOW_DIFFS=true) -->

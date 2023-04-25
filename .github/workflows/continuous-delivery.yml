@@ -114,6 +114,10 @@ jobs:
           tag_name: ${{ steps.semanticversion.outputs.new_tag }}
           draft: false
           prerelease: false
+          files: |
+            versions.xml
+            ./target/documentplatform-standard14-fonts-${{ steps.semanticversion.outputs.new_version }}-javadoc.jar
+            ./target/documentplatform-standard14-fonts-${{ steps.semanticversion.outputs.new_version }}-sources.jar
 
       ## Notify developers
       - name: Notify developers

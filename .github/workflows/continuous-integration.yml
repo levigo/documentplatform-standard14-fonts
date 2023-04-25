@@ -7,10 +7,20 @@ on:
     paths-ignore:
       #   !! Attention!! removing the following line may produce an endless loop on the build system!!
       - '**/README.md'
+      - '.github/workflows/continuous-delivery.yml'
+
+env:
+  # This will suppress any download for dependencies and plugins or upload messages which would clutter the console log.
+  # `showDateTime` will show the passed time in milliseconds. You need to specify `--batch-mode` to make this work.
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  # As of Maven 3.3.0 instead of this you may define these options in `.mvn/maven.config` so the same config is used
+  # when running from the command line.
+  # `installAtEnd` and `deployAtEnd` are only effective with recent version of the corresponding plugins.
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
 
     strategy:
@@ -20,24 +30,24 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      ## Configure JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: ${{ matrix.jdk }}
 
       ## Enable Caching
       # Reduce cache size by excluding artifacts with the project.groupId
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-
-
-      ## Configure JDK
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: ${{ matrix.jdk }}
 
       ## Configure maven settings
       - name: Prepare maven settings
@@ -51,9 +61,9 @@ jobs:
 
       ## Build with maven
       - name: Perform build
-        uses: GabrielBB/xvfb-action@v1
+        uses: coactions/setup-xvfb@v1
         with:
-          run: mvn -B verify -Dmaven.test.failure.ignore=true
+          run: mvn ${{ env.MAVEN_CLI_OPTS }} verify -Dmaven.test.failure.ignore=true
 
       ## Publish test report
       - name: Publish Test Report for JDK ${{ matrix.jdk }}
@@ -64,15 +74,16 @@ jobs:
           fail_on_test_failures: true
           check_name: Test Report for JDK ${{ matrix.jdk }}
 
-      ## Notify Slack
-      - name: Notify slack
-        uses: hennejg/slack-build-notifier@v1.1
+      ## Notify developers
+      - name: Notify developers
+        uses: 8398a7/action-slack@v3
         with:
           username: GitHub
           icon_emoji: octocat
           channel: ci_docp
-          text: Performed mvn build with JDK ${{ matrix.jdk }}
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref
+          text: ${{ github.workflow }} ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()

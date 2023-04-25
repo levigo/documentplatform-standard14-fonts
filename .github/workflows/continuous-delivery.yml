@@ -50,7 +50,7 @@ jobs:
 
       - name: Set version and tag variables
         run: |
-          echo "NEW_VERSION=${{ env.VERSION_PREFIX }}${{ steps.semanticversion.outputs.new_version }}" >> $GITHUB_ENV \
+          echo "NEW_VERSION=${{ steps.semanticversion.outputs.new_version }}" >> $GITHUB_ENV \
           && echo "NEW_TAG=${{ env.TAG_PREFIX }}${{ steps.semanticversion.outputs.new_version }}" >> $GITHUB_ENV
 
       ## Configure JDK

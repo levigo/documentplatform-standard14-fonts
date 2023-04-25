@@ -57,6 +57,7 @@ jobs:
           REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
           REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
         run: |
+          echo NEXUS2_REPO_RELEASES ${{ secrets.NEXUS2_REPO_RELEASES }}
           mkdir -p ~/.m2
           envsubst < ./.github/settings.xml > ~/.m2/settings.xml
 

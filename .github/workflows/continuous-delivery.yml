@@ -127,7 +127,9 @@ jobs:
           username: GitHub
           icon_emoji: octocat
           channel: ci_docp
-          text: Released new version `${{ env.NEW_VERSION }}` of *${{ github.repository }}* to ${{ secrets.REPOSITORY_URL }}
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref
+          text: Released new version `${{ env.NEW_VERSION }}` of *${{ github.repository }}*
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()

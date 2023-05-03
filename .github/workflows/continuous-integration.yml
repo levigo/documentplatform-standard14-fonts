@@ -52,10 +52,9 @@ jobs:
       ## Configure maven settings
       - name: Prepare maven settings
         env:
-###          REPOSITORY_URL: ${{ secrets.NEXUS2_REPO_RELEASES }}
-          REPOSITORY_URL: "https://levigo.de/maven2/content/repositories/levigo-releases/"
-          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
-          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD}}
+          REPOSITORY_URL: ${{ secrets.LEVIGO_NEXUS_REPO_RELEASES }}
+          REPOSITORY_RELEASE_USERID: ${{ secrets.PUB_NEXUS2_USERNAME_RW }}
+          REPOSITORY_RELEASE_CREDENTIALS: ${{ secrets.PUB_NEXUS2_PASSWORD_RW}}
         run: |
           echo NEXUS2_REPO_RELEASES ${{ secrets.NEXUS2_REPO_RELEASES }}
           mkdir -p ~/.m2

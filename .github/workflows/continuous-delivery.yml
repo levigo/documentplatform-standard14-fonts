@@ -88,8 +88,8 @@ jobs:
           echo Releasing as ${{ env.NEW_VERSION }}
           mvn ${{ env.MAVEN_CLI_OPTS }} versions:set -DnewVersion=${{ env.NEW_VERSION }}
 
-      - name: Perform build
-        uses: GabrielBB/xvfb-action@v1
+      - name: Perform build with xvfb
+        uses: coactions/setup-xvfb@v1
         with:
           run: mvn -B verify -Dmaven.test.failure.ignore=true
 

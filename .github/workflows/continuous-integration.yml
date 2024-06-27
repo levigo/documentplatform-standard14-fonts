@@ -41,7 +41,7 @@ jobs:
 
       ## Enable Caching
       # Reduce cache size by excluding artifacts with the project.groupId
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.m2/repository

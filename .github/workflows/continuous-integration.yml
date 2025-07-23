@@ -28,7 +28,6 @@ jobs:
       matrix:
         jdk: [ 8 ]
 
-
     steps:
       - uses: actions/checkout@v4
 

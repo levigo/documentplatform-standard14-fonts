@@ -18,7 +18,6 @@ env:
   TAG_PREFIX: 'documentplatform-standard14-fonts-'
 
 jobs:
-
   build:
     runs-on: ubuntu-22.04
     timeout-minutes: 15

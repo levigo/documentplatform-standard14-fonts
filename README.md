@@ -29,3 +29,4 @@ Simply clone the project and build via Apache Maven. Execute `mvn install` in th
 
 The individual fonts come with their own license each. The according license files are placed inside the folder of the
 font. This project and the fonts all use the Apache 2.0 license.
+

@@ -54,10 +54,28 @@
             <version>${docp.core.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Test are migrated to JUnit 5
+         only ImageComparison Test needs AssertionFailedError
+         we need a JUnit 5 alternative ImageComparison -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
         <!-- Needed if you want an image-diff (by setting env-var: ICT_SHOW_DIFFS=true) -->

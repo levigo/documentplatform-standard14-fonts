@@ -26,11 +26,11 @@
     <distributionManagement>
         <repository>
             <id>maven2.releases.levigo.de</id>
-            <url>https://levigo.de/maven2/content/repositories/levigo-releases/</url>
+            <url>https://levigo.de/maven2/repository/levigo-releases/</url>
         </repository>
         <snapshotRepository>
             <id>maven2.snapshots.levigo.de</id>
-            <url>https://levigo.de/maven2/content/repositories/levigo-snapshots/</url>
+            <url>https://levigo.de/maven2/repository/levigo-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 

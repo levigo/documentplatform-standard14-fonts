@@ -24,14 +24,14 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: levigo/github-actions/checkout@latest
         with:
           fetch-depth: 0
 
       ## compute the string of the next version
       - name: Bump version and create tag
         id: semanticversion
-        uses: mathieudutour/github-tag-action@v6.2
+        uses: levigo/github-actions/github-tag-action@latest
         with:
           release_branches: master
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,13 +55,13 @@ jobs:
 
       ## Configure JDK
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: levigo/github-actions/setup-java@latest
         with:
           distribution: 'zulu'
           java-version: '8'
 
       ## Enable Caching
-      - uses: actions/cache@v3
+      - uses: levigo/github-actions/cache@latest
         id: cache
         with:
           path: |
@@ -89,14 +89,12 @@ jobs:
           mvn ${{ env.MAVEN_CLI_OPTS }} versions:set -DnewVersion=${{ env.NEW_VERSION }}
 
       - name: Perform build with xvfb
-        uses: coactions/setup-xvfb@90473c3ebc69533a1a6e0505c36511b69c8c3135
-        with:
-          run: mvn -B verify -Dmaven.test.failure.ignore=true
+        run: xvfb-run mvn -B verify -Dmaven.test.failure.ignore=true
 
       ## Publish test report
       - name: Publish Test Report for JDK 8
         id: test-report
-        uses: scacap/action-surefire-report@v1
+        uses: levigo/github-actions/surefire-report@latest
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_test_failures: true
@@ -109,7 +107,7 @@ jobs:
       ## Create Release
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: levigo/github-actions/gh-release@latest
         with:
           name: Release ${{ env.NEW_VERSION }}
           tag_name: ${{ steps.semanticversion.outputs.new_tag }}
@@ -122,14 +120,11 @@ jobs:
 
       ## Notify developers
       - name: Notify developers
-        uses: 8398a7/action-slack@v3
+        uses: levigo/github-actions/notify-developers@latest
         with:
-          username: GitHub
-          icon_emoji: octocat
-          channel: ci_docp
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref
-          text: Released new version `${{ env.NEW_VERSION }}` of *${{ github.repository }}*
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          slackWebhookURL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          slackChannel: "ci_docp"
+          slackMessage: Released new version `${{ env.NEW_VERSION }}` of *${{ github.repository }}*
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
         if: failure()
+

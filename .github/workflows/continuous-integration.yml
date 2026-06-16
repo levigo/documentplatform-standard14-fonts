@@ -30,18 +30,18 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: levigo/github-actions/checkout@latest
 
       ## Configure JDK
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: levigo/github-actions/setup-java@latest
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.jdk }}
 
       ## Enable Caching
       # Reduce cache size by excluding artifacts with the project.groupId
-      - uses: actions/cache@v3
+      - uses: levigo/github-actions/cache@latest
         with:
           path: |
             ~/.m2/repository
@@ -61,30 +61,23 @@ jobs:
           envsubst < ./.github/settings.xml > ~/.m2/settings.xml
 
       ## Build with maven
-      - name: Perform build
-        uses: coactions/setup-xvfb@90473c3ebc69533a1a6e0505c36511b69c8c3135
-        with:
-          run: mvn ${{ env.MAVEN_CLI_OPTS }} verify -Dmaven.test.failure.ignore=true
+      - name: Perform build with xvfb
+        run: xvfb-run mvn ${{ env.MAVEN_CLI_OPTS }} verify -Dmaven.test.failure.ignore=true
 
       ## Publish test report
       - name: Publish Test Report for JDK ${{ matrix.jdk }}
         id: test-report
-        uses: scacap/action-surefire-report@v1
+        uses: levigo/github-actions/surefire-report@latest
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_test_failures: true
           check_name: Test Report for JDK ${{ matrix.jdk }}
 
       ## Notify developers
-      - name: Notify developers
-        uses: 8398a7/action-slack@v3
+      - uses: levigo/github-actions/notify-developers@latest
         with:
-          username: GitHub
-          icon_emoji: octocat
-          channel: ci_docp
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref
-          text: ${{ github.workflow }} ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ failure() &&github.actor != 'dependabot[bot]' }}
+          slackWebhookURL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          slackChannel: "ci_docp"
+          slackMessage: ${{ github.workflow }} with ${{ matrix.jdk }} ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ failure() && github.actor != 'dependabot[bot]' }}

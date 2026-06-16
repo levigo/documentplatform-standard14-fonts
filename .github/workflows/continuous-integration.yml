@@ -30,18 +30,18 @@ jobs:
 
 
     steps:
-      - uses: levigo/github-actions/checkout@latest
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       ## Configure JDK
       - name: Set up JDK
-        uses: levigo/github-actions/setup-java@latest
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0 v5
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.jdk }}
 
       ## Enable Caching
       # Reduce cache size by excluding artifacts with the project.groupId
-      - uses: levigo/github-actions/cache@latest
+      - uses: actions/cache/@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             ~/.m2/repository
@@ -67,17 +67,8 @@ jobs:
       ## Publish test report
       - name: Publish Test Report for JDK ${{ matrix.jdk }}
         id: test-report
-        uses: levigo/github-actions/surefire-report@latest
+        uses: uses: ScalableCapital/action-surefire-report@1e92f48016e566e4eed2d81560edbfe0f524cfb7 # v2.0.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_test_failures: true
           check_name: Test Report for JDK ${{ matrix.jdk }}
-
-      ## Notify developers
-      - uses: levigo/github-actions/notify-developers@latest
-        with:
-          slackWebhookURL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          slackChannel: "ci_docp"
-          slackMessage: ${{ github.workflow }} with ${{ matrix.jdk }} ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-        if: ${{ failure() && github.actor != 'dependabot[bot]' }}

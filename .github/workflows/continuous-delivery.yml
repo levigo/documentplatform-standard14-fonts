@@ -24,14 +24,14 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: levigo/github-actions/checkout@latest
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
       ## compute the string of the next version
       - name: Bump version and create tag
         id: semanticversion
-        uses: levigo/github-actions/github-tag-action@latest
+        uses: StackAdapt/github-tag-action@c39fa6d65cd3def233513f21ba395a09dbc92eea # v7
         with:
           release_branches: master
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,13 +55,13 @@ jobs:
 
       ## Configure JDK
       - name: Set up JDK
-        uses: levigo/github-actions/setup-java@latest
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0 v5
         with:
           distribution: 'zulu'
           java-version: '8'
 
       ## Enable Caching
-      - uses: levigo/github-actions/cache@latest
+      - uses: actions/cache/@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         id: cache
         with:
           path: |
@@ -94,7 +94,7 @@ jobs:
       ## Publish test report
       - name: Publish Test Report for JDK 8
         id: test-report
-        uses: levigo/github-actions/surefire-report@latest
+        uses: ScalableCapital/action-surefire-report@1e92f48016e566e4eed2d81560edbfe0f524cfb7 # v2.0.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_test_failures: true
@@ -107,7 +107,7 @@ jobs:
       ## Create Release
       - name: Create Release
         id: create_release
-        uses: levigo/github-actions/gh-release@latest
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
         with:
           name: Release ${{ env.NEW_VERSION }}
           tag_name: ${{ steps.semanticversion.outputs.new_tag }}
@@ -117,14 +117,4 @@ jobs:
             ./target/documentplatform-standard14-fonts-${{ steps.semanticversion.outputs.new_version }}.jar
             ./target/documentplatform-standard14-fonts-${{ steps.semanticversion.outputs.new_version }}-javadoc.jar
             ./target/documentplatform-standard14-fonts-${{ steps.semanticversion.outputs.new_version }}-sources.jar
-
-      ## Notify developers
-      - name: Notify developers
-        uses: levigo/github-actions/notify-developers@latest
-        with:
-          slackWebhookURL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          slackChannel: "ci_docp"
-          slackMessage: Released new version `${{ env.NEW_VERSION }}` of *${{ github.repository }}*
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-        if: failure()
 
